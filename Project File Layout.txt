@@ -1,0 +1,24 @@
+werewolf-game/
+├── server/                   # Game engine + socket handlers
+│   ├── index.js              # Bootstraps HTTP + WebSocket
+│   ├── socketHandlers.js     # Events: join, role-action, vote
+│   ├── game/
+│   │   ├── roles.js          # Role pool + traits
+│   │   ├── gameState.js      # Lobby, player state, status effects
+│   │   └── gamePhases.js     # Night, Day, Voting
+│   └── utils/
+│       └── logger.js         # Terminal logging
+├── client/                   # React UI
+│   ├── public/
+│   └── src/
+│       ├── main-screen/      # Host screen
+│       ├── mobile-screen/    # Player phone view
+│       ├── components/       # Shared UI pieces
+│       ├── hooks/
+│       └── App.jsx
+├── shared/                   # Shared data/constants
+│   └── constants.js
+├── .gitignore
+├── README.md
+├── package.json
+└── vite.config.js            # Fast dev with Vite

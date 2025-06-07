@@ -1,38 +1,48 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import socket from "../socket";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import socket from "../socket"; // ✅ CORRECT
+import "../index.css";
 
-function HostLobby() {
-  const { roomCode } = useParams();
+const HostLobby = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { roomCode, isHost } = location.state || {};
   const [players, setPlayers] = useState([]);
 
   useEffect(() => {
-    socket.emit("get-players", roomCode);
+  socket.emit("get-players", roomCode);
 
-    const handlePlayerList = (playerList) => {
-      setPlayers(playerList);
-    };
+  const handleRoomState = ({ players }) => {
+    setPlayers(players);
+  };
 
-    socket.on("player-list-updated", handlePlayerList);
+  socket.on("room-state", handleRoomState);
 
-    return () => {
-      socket.off("player-list-updated", handlePlayerList);
-    };
-  }, [roomCode]);
+  return () => {
+    socket.off("room-state", handleRoomState);
+  };
+}, [roomCode]);
+
+  const handleStartGame = () => {
+    socket.emit("start-game", roomCode);
+  };
 
   return (
     <div className="lobby-screen">
       <div className="app-container">
-        <h2 className="title">Room Code: {roomCode}</h2>
-        <p className="subtitle">Waiting for players...</p>
-        <ul className="player-list">
-          {players.map((player, index) => (
-            <li key={index} className="player-name">{player.name}</li>
+        <h2>Room Code: <span style={{ color: "#ffcc00" }}>{roomCode}</span></h2>
+        <h3>Waiting for Players...</h3>
+        <div className="player-list">
+          {players.map((player, idx) => (
+            <div key={idx} className="player-name">{player.name}</div>
           ))}
-        </ul>
+        </div>
+        {isHost && (
+          <button onClick={handleStartGame}>Start Game</button>
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default HostLobby;

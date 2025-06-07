@@ -9,7 +9,7 @@ function JoinScreen() {
 
   const handleJoin = () => {
     if (!roomCode || !name) return;
-    socket.emit("join-room", { roomCode, name });
+    socket.emit("join-room", { roomCode, playerName: name }); // ✅ playerName, not name
     navigate(`/player/${roomCode}`);
   };
 

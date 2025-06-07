@@ -151,3 +151,10 @@ input::placeholder {
   font-family: 'Cinzel', serif;
   text-align: center;
 }
+
+.room-code {
+  font-size: 20px;
+  color: white;
+  text-align: center;
+  margin-top: 10px;
+}
